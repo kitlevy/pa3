@@ -22,17 +22,27 @@ void print_components(UNSIGN_TYPE value, FP_TYPE original) {
 
 void print_normalized(UNSIGN_TYPE value) {
     Components *comp = (Components *)&value;
+    int og_exponent = (int)comp->exponent
+    int og_mantissa = ((FP_TYPE)comp->mantissa / (1 << MANT_BITS))
+    int sign = 0;
+    if (comp->sign) {
+        sign = -1;
+    } else {
+        sign = 1;
+    }
     
     //need to consider special values?
     
-    int true_exponent = (int)comp->exponent - BIAS;
-    FP_TYPE mantissa_value = 1 + ((FP_TYPE)comp->mantissa / (1 << MANT_BITS));
-    FP_TYPE reconstructed = mantissa_value * power_of_2(true_exponent);
-    
-    if (comp->sign)
-        reconstructed_value = -reconstructed_value;
-    
-   //print
+    int true_exponent = og_exponent - BIAS;
+    FP_TYPE mantissa_value = 1 + og_mantissa;
+    FP_TYPE reconstructed = sign * mantissa_value * power_of_2(true_exponent);
+        
+    printf("Original value:\n");
+    printf("(-1)^{%d} x (1 + %f) x 2^{%d - %d}\n", (int)comp->sign, og_mantissa, og_exponent, BIAS);
+    printf(" = {%d} x %f x 2^{%d}\n", sign, mantissa_value, true_exponent);
+    printf(" = %f x %d\n", sign * mantissa_value, power_of_2(true_exponent));
+    printf(" = %f", reconstructed);
+
 }
 
 FP_TYPE power_of_2(int exponent) {

@@ -3,8 +3,10 @@
 #define MANT_BITS 23
 #ifdef DOUBLE
 #define FP_TYPE double
+#define BIAS 127
 #else
 #define FP_TYPE float
+#define BIAS 1023
 #endif
 #define UNSIGN_TYPE unsigned FP_TYPE
 
@@ -22,4 +24,5 @@ typedef struct {
 void print_bits(UNSIGN_TYPE value, int length);
 void print_components(UNSIGN_TYPE value, FP_TYPE original);
 void print_normalized(UNSIGN_TYPE value);
+FP_TYPE power_of_2(int exponent);
 

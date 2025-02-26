@@ -1,12 +1,14 @@
+APP = fp_analyzer
+CC = gcc
 FLAGS = -Wall -Werror -std=c99
 
-all: fp_analyzer_f fp_analyzer_d
+all:${APP}_f ${APP}_d
 
-fp_analyzer_f: fp_analyzer.c main.c
-	gcc ${FLAGS} $^ -o $@
+${APP}_f: ${APP}.c main.c
+	${CC} ${FLAGS} $^ -o $@
 
-fp_analyzer_d: fp_analyzer.c main.c
-	gcc ${FLAGS} -DDOUBLE $^ -o $@
+${APP}_d: ${APP}.c main.c
+	${CC} ${FLAGS} -DDOUBLE $^ -o $@
 
 clean:
-	rm fp_analyzer_f fp_analyzer_d
+	rm ${APP}_f ${APP}_d
