@@ -21,7 +21,7 @@ void print_components(UNSIGN_TYPE value, FP_TYPE original) {
 }
 
 void print_normalized(UNSIGN_TYPE value) {
-    Components *comp = (Components *)&value;
+    Components * comp = (Components *)&value;
     int og_exponent = (int)comp->exponent
     int og_mantissa = ((FP_TYPE)comp->mantissa / (1 << MANT_BITS))
     int sign = 0;
@@ -38,11 +38,44 @@ void print_normalized(UNSIGN_TYPE value) {
     FP_TYPE reconstructed = sign * mantissa_value * power_of_2(true_exponent);
         
     printf("Original value:\n");
+
     printf("(-1)^{%d} x (1 + %f) x 2^{%d - %d}\n", (int)comp->sign, og_mantissa, og_exponent, BIAS);
     printf(" = {%d} x %f x 2^{%d}\n", sign, mantissa_value, true_exponent);
     printf(" = %f x %d\n", sign * mantissa_value, power_of_2(true_exponent));
     printf(" = %f", reconstructed);
 
+}
+
+void print_denormalized(UNSIGN_TYPE value) {
+    Components * comp = (Components *)&value;
+    FP_TYPE og_mantissa = ((FP_TYPE)comp->mantissa / (1 << MANT_BITS))
+    int sign = 0;
+    if (comp->sign) {
+        sign = -1;
+    } else {
+        sign = 1;
+    }
+    
+    //need to consider special values?
+    
+    FP_TYPE mantissa_value = 1 + og_mantissa;
+    FP_TYPE reconstructed = sign * mantissa_value * power_of_2(1 - BIAS);
+        
+    printf("Original value:\n");
+    printf("(-1)^{%d} x (1 + %.45f) x 2^{%d - %d}\n", (int)comp->sign, og_mantissa, og_exponent, BIAS);
+    printf(" = {%d} x %.45f x 2^{%d}\n", sign, mantissa_value, true_exponent);
+    printf(" = %.45f x %d\n", sign * mantissa_value, power_of_2(true_exponent));
+    printf(" = %.45f", reconstructed);
+
+}
+
+void print_reconstitution(UNSIGN_TYPE value) {
+    Components * comp = (Components *)&value;
+    if (comp->exponent == 0) {
+        print_denormalized(value);
+    } else {
+        print_normalized(value);
+    }
 }
 
 FP_TYPE power_of_2(int exponent) {
