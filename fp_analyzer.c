@@ -49,7 +49,7 @@ void print_normalized(UNSIGN_TYPE value) {
         
     printf("Original value:\n");
     printf("(-1)^{%d} x (1 + %.6f) x 2^{%d - %d}\n", conv.c.sign, og_mantissa, og_exponent, BIAS);
-    printf(" = {%d} x %g x 2^{%d}\n", sign, mantissa_value, true_exponent);
+    printf(" = %d x %g x 2^{%d}\n", sign, mantissa_value, true_exponent);
     printf(" = %g x %g\n", sign * mantissa_value, power_of_2(true_exponent));
     printf(" = %g\n", reconstructed);
 
@@ -72,7 +72,7 @@ void print_denormalized(UNSIGN_TYPE value) {
     
     printf("Original value:\n");
     printf("(-1)^{%d} x (1 + %g) x 2^{%d - %d}\n", conv.c.sign, og_mantissa, og_exponent, BIAS);
-    printf(" = {%d} x %g x 2^{%d}\n", sign, mantissa_value, true_exponent);
+    printf(" = %d x %g x 2^{%d}\n", sign, mantissa_value, true_exponent);
     printf(" = %g x %g\n", sign * mantissa_value, power_of_2(true_exponent));
     printf(" = %g\n", reconstructed);
 }

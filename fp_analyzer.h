@@ -5,7 +5,6 @@
 #define EXP_BITS 11
 #define MANT_BITS 52
 #define BIAS 1023
-#define FORMAT_SPEC lf
 #else
 #define FP_TYPE float
 #define UNSIGN_TYPE unsigned int
@@ -13,7 +12,6 @@
 #define EXP_BITS 8
 #define MANT_BITS 23
 #define BIAS 127
-#define FORMAT_SPEC f
 #endif
 
 typedef struct {
@@ -24,7 +22,7 @@ typedef struct {
 
 typedef union {
     FP_TYPE f;
-    unsigned int u;
+    UNSIGN_TYPE u;
     Components c;
 } Converter;
 
