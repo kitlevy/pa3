@@ -1,3 +1,4 @@
+#include <math.h>
 #include <stdio.h>
 
 #include "fp_analyzer.h"
@@ -10,7 +11,15 @@ void print_bits(UNSIGN_TYPE value, int length) {
 
 void print_components(UNSIGN_TYPE value, FP_TYPE original) {
     Components * comp = (Components *)&value;
-    printf("%f\n", original);
+    if (isnan(original)) {
+        if (signbit(original)) {
+            printf("-nan\n");
+        } else {
+            printf("nan\n");
+        }
+    } else {
+        printf("%f\n", original);
+    }
     printf("Bits: ");
     print_bits(comp->sign, 1);
     printf("|");
@@ -46,7 +55,6 @@ void print_normalized(UNSIGN_TYPE value) {
 
 void print_denormalized(UNSIGN_TYPE value) {
     Components * comp = (Components *)&value;
-    int og_exponent = (int)comp->exponent;
     UNSIGN_TYPE og_mantissa = ((FP_TYPE)comp->mantissa / (1ULL << MANT_BITS));
     int sign = 0;
     if (comp->sign) {
@@ -54,21 +62,21 @@ void print_denormalized(UNSIGN_TYPE value) {
     } else {
         sign = 1;
     }
-    
-    int true_exponent = og_exponent - BIAS;
+    int true_exponent = 1 - BIAS;
     FP_TYPE mantissa_value = 1 + og_mantissa;
     FP_TYPE reconstructed = sign * mantissa_value * power_of_2(true_exponent);
         
     printf("Original value:\n");
-    printf("(-1)^{%d} x (1 + %.45f) x 2^{%d - %d}\n", (int)comp->sign, (float)og_mantissa, og_exponent, BIAS);
-    printf(" = {%d} x %.45f x 2^{%d}\n", sign, mantissa_value, true_exponent);
-    printf(" = %.45f x %f\n", sign * mantissa_value, power_of_2(true_exponent));
-    printf(" = %.45f\n", reconstructed);
+    printf("(-1)^{%d} x (1 + %.f) x 2^{1 - %d}\n", (int)comp->sign, (float)og_mantissa, BIAS);
+    printf(" = {%d} x %.f x 2^{%d}\n", sign, mantissa_value, true_exponent);
+    printf(" = %.f x %f\n", sign * mantissa_value, power_of_2(true_exponent));
+    printf(" = %.f\n", reconstructed);
 
 }
 
 void print_reconstitution(UNSIGN_TYPE value) {
     Components * comp = (Components *)&value;
+    print_normalized(value);
     if (comp->exponent == 0) {
         print_denormalized(value);
     } else {

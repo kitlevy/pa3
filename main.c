@@ -21,7 +21,7 @@ int main(int argc, char *argv[]) {
     printf("> ");
     while (scanf("%f", &conv.f) == 1) {
         print_components(conv.u, conv.f);
-        print_reconstitution(conv.f);
+        print_reconstitution(conv.u);
         printf("> ");
     }
     return EXIT_SUCCESS;
