@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) {
     Converter conv;
     printf("Please enter a floating point number or q to quit: \n");
     printf("> ");
-    while (scanf("%f", &conv.f) == 1) {
+    while (scanf("%{FORMAT_SPEC}", &conv.f) == 1) {
         print_components(conv.u, conv.f);
         print_reconstitution(conv.u);
         printf("> ");
