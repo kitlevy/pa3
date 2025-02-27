@@ -1,6 +1,6 @@
 #ifdef DOUBLE
 #define FP_TYPE double
-#define UNSIGN_TYPE unsigned long
+#define UNSIGN_TYPE unsigned long long
 #define TYPE_BITS 64
 #define EXP_BITS 11
 #define MANT_BITS 52
